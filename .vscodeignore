@@ -1,0 +1,10 @@
+.git/
+.github/
+.gitignore
+.vscode/
+node_modules/
+*.vsix
+.DS_Store
+docs/
+examples/
+*.code-workspace

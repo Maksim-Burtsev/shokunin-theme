@@ -1,0 +1,5 @@
+services:
+  api:
+    image: theme-api:latest
+    retries: 3
+    enabled: true
