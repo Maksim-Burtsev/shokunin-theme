@@ -422,9 +422,7 @@
         "entity.name.function.member",
         "support.function",
         "support.function.builtin",
-        "variable.function",
-        "meta.function-call",
-        "meta.function-call.generic.python"
+        "variable.function"
       ],
       "settings": {
         "foreground": "#006FAE",
@@ -622,6 +620,8 @@
       "foreground": "#9A6000",
       "bold": true
     },
+    "variable": "#303841",
+    "variable:python": "#303841",
     "variable.readonly": {
       "foreground": "#9A6000",
       "bold": true
