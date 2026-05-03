@@ -17,16 +17,6 @@ The only acceptable final class/type pairing is:
 
 VS Code color themes can define colors and token styles. They cannot force a user's global `editor.fontFamily`, `editor.fontSize`, or `editor.lineHeight`.
 
-To make the debug preview match the calibration screen, the included `shokunin-sumi-ume.code-workspace` sets:
-
-```json
-{
-  "editor.fontFamily": "Monaco, Menlo, Consolas, 'Courier New', monospace",
-  "editor.fontSize": 13,
-  "editor.lineHeight": 16
-}
-```
-
 ## Python / Pylance
 
 The theme includes defensive semantic selectors for type hints:
