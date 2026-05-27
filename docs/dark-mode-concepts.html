@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shokunin Dark Mode Concepts</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #101314;
+      --text: #DED9D0;
+      --muted: #918C84;
+      --line: #2A2F30;
+      --accent: #78B8D0;
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-code: Monaco, Menlo, Consolas, "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font: 14px/1.45 var(--font-ui);
+    }
+
+    main {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 13px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .intro p,
+    .rank-list p,
+    .variant-note {
+      color: var(--muted);
+    }
+
+    .intro p {
+      max-width: 780px;
+      margin-top: 8px;
+    }
+
+    .rank-list {
+      border: 1px solid var(--line);
+      background: #15191A;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .rank-list ol {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    .rank-list li + li {
+      margin-top: 7px;
+    }
+
+    .rank-list strong {
+      color: var(--text);
+    }
+
+    .variant {
+      --bg: #15191A;
+      --surface: #1B2021;
+      --surface-2: #202627;
+      --editor: #161A1B;
+      --editor-line: #1E2425;
+      --border: #2D3434;
+      --fg: #DCD6CC;
+      --fg-strong: #ECE2D0;
+      --subtle: #8F948D;
+      --keyword: #ECE2D0;
+      --function: #6FB7D7;
+      --class: #ECE2D0;
+      --type: #D88AA3;
+      --string: #83BE8D;
+      --constant: #D6A84C;
+      --property: #B6C0C6;
+      --decorator: #D39462;
+      --operator: #A9AAA5;
+      --comment: #8F948D;
+      --error: #E06C75;
+      --selection: #33424A;
+      margin-top: 24px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .variant-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: start;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .variant-note {
+      margin-top: 5px;
+      max-width: 880px;
+      color: var(--subtle);
+    }
+
+    .badge {
+      min-width: 84px;
+      border: 1px solid color-mix(in srgb, var(--function) 55%, var(--border));
+      border-radius: 8px;
+      padding: 6px 9px;
+      color: var(--function);
+      text-align: center;
+      font: 700 12px/1.1 var(--font-code);
+      white-space: nowrap;
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: 54px 230px minmax(0, 1fr);
+      min-height: 560px;
+    }
+
+    .activity {
+      display: grid;
+      grid-template-rows: repeat(5, 34px) 1fr 34px;
+      justify-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      background: var(--surface-2);
+      border-right: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--subtle);
+      border-radius: 5px;
+      opacity: 0.8;
+    }
+
+    .dot.active {
+      border-color: var(--function);
+      background: color-mix(in srgb, var(--function) 22%, transparent);
+      box-shadow: inset 3px 0 0 var(--function);
+    }
+
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      color: var(--fg);
+      overflow: hidden;
+    }
+
+    .side-title,
+    .side-section,
+    .tabbar,
+    .status {
+      font: 12px/1.2 var(--font-ui);
+    }
+
+    .side-title {
+      padding: 14px 14px 10px;
+      color: var(--fg-strong);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .side-section {
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--subtle);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .file-tree {
+      padding: 8px 0;
+      font: 13px/1.8 var(--font-ui);
+    }
+
+    .file {
+      padding: 0 14px 0 20px;
+      color: var(--subtle);
+    }
+
+    .file.active {
+      background: var(--selection);
+      color: var(--fg);
+      border-left: 3px solid var(--function);
+      padding-left: 17px;
+    }
+
+    .editor-shell {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-width: 0;
+      background: var(--editor);
+    }
+
+    .tabbar {
+      display: flex;
+      align-items: stretch;
+      min-width: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      color: var(--subtle);
+    }
+
+    .tab {
+      min-width: 150px;
+      padding: 10px 13px;
+      border-right: 1px solid var(--border);
+    }
+
+    .tab.active {
+      color: var(--fg);
+      background: var(--editor);
+      box-shadow: inset 0 2px 0 var(--function);
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: minmax(460px, 1fr) minmax(340px, 0.8fr);
+      min-width: 0;
+    }
+
+    .pane {
+      min-width: 0;
+      border-right: 1px solid var(--border);
+    }
+
+    .pane:last-child {
+      border-right: 0;
+    }
+
+    .pane-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--editor-line);
+      color: var(--subtle);
+      font: 12px/1.2 var(--font-ui);
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px 0 18px;
+      overflow: auto;
+      font: 13px/1.45 var(--font-code);
+      color: var(--fg);
+      tab-size: 4;
+    }
+
+    .line {
+      display: grid;
+      grid-template-columns: 44px minmax(max-content, 1fr);
+      min-height: 19px;
+    }
+
+    .line.hl {
+      background: var(--editor-line);
+    }
+
+    .ln {
+      color: var(--subtle);
+      opacity: 0.68;
+      padding: 0 11px 0 8px;
+      text-align: right;
+      user-select: none;
+    }
+
+    .code {
+      padding-right: 18px;
+      white-space: pre;
+    }
+
+    .kw,
+    .class {
+      color: var(--keyword);
+      font-weight: 800;
+    }
+
+    .fn {
+      color: var(--function);
+      font-weight: 800;
+    }
+
+    .type {
+      color: var(--type);
+      font-weight: 800;
+    }
+
+    .str {
+      color: var(--string);
+    }
+
+    .num,
+    .const {
+      color: var(--constant);
+      font-weight: 800;
+    }
+
+    .prop {
+      color: var(--property);
+    }
+
+    .decorator {
+      color: var(--decorator);
+      font-weight: 800;
+    }
+
+    .op {
+      color: var(--operator);
+    }
+
+    .comment {
+      color: var(--comment);
+      font-style: italic;
+    }
+
+    .err {
+      color: var(--error);
+      font-weight: 800;
+    }
+
+    .sel {
+      background: var(--selection);
+      border-radius: 4px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 7px 12px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--subtle);
+    }
+
+    .status strong {
+      color: var(--function);
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 8px;
+      padding: 14px 18px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .swatch {
+      min-height: 62px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .swatch-color {
+      height: 28px;
+      background: var(--c);
+    }
+
+    .swatch-label {
+      padding: 6px 7px;
+      color: var(--subtle);
+      font: 11px/1.2 var(--font-code);
+    }
+
+    .v-yoru {
+      --bg: #111414;
+      --surface: #191E1E;
+      --surface-2: #202627;
+      --editor: #15191A;
+      --editor-line: #1E2425;
+      --border: #2D3434;
+      --fg: #DCD6CC;
+      --fg-strong: #ECE2D0;
+      --subtle: #8F948D;
+      --keyword: #ECE2D0;
+      --function: #6FB7D7;
+      --class: #ECE2D0;
+      --type: #D88AA3;
+      --string: #83BE8D;
+      --constant: #D6A84C;
+      --property: #B6C0C6;
+      --decorator: #D39462;
+      --operator: #A9AAA5;
+      --comment: #8F948D;
+      --error: #E06C75;
+      --selection: #33424A;
+    }
+
+    .v-tsuki {
+      --bg: #121720;
+      --surface: #1A202B;
+      --surface-2: #222A36;
+      --editor: #171D26;
+      --editor-line: #202834;
+      --border: #303947;
+      --fg: #D7DFE7;
+      --fg-strong: #E4EAF0;
+      --subtle: #8794A3;
+      --keyword: #DCE5EE;
+      --function: #7DB1E5;
+      --class: #DCE5EE;
+      --type: #D990AD;
+      --string: #96C28C;
+      --constant: #D9B66B;
+      --property: #AEBBC9;
+      --decorator: #CFA57D;
+      --operator: #A8B2BE;
+      --comment: #84909D;
+      --error: #E36B77;
+      --selection: #2F4057;
+    }
+
+    .v-kuro {
+      --bg: #14110E;
+      --surface: #1D1814;
+      --surface-2: #251F19;
+      --editor: #191511;
+      --editor-line: #231D18;
+      --border: #3A3026;
+      --fg: #E0D2BE;
+      --fg-strong: #EADBC6;
+      --subtle: #938778;
+      --keyword: #EADBC6;
+      --function: #78B7C3;
+      --class: #EADBC6;
+      --type: #D98A9A;
+      --string: #91BE86;
+      --constant: #E0B85E;
+      --property: #C5B59F;
+      --decorator: #CF8E61;
+      --operator: #B6AA9C;
+      --comment: #938778;
+      --error: #E36C73;
+      --selection: #3A342D;
+    }
+
+    .v-ensou {
+      --bg: #171A1A;
+      --surface: #202524;
+      --surface-2: #272D2C;
+      --editor: #1D2121;
+      --editor-line: #252B2A;
+      --border: #343B39;
+      --fg: #CAC8BD;
+      --fg-strong: #D7D1C4;
+      --subtle: #7D847E;
+      --keyword: #D7D1C4;
+      --function: #68A7BC;
+      --class: #D7D1C4;
+      --type: #C68198;
+      --string: #7FAA7B;
+      --constant: #CAA052;
+      --property: #A8AEA8;
+      --decorator: #BC845D;
+      --operator: #9EA39E;
+      --comment: #7D847E;
+      --error: #D86169;
+      --selection: #313B3A;
+    }
+
+    .v-asagi {
+      --bg: #0E1420;
+      --surface: #141D2A;
+      --surface-2: #1A2635;
+      --editor: #101824;
+      --editor-line: #182333;
+      --border: #2A3748;
+      --fg: #CBD5E1;
+      --fg-strong: #E2E8F0;
+      --subtle: #748092;
+      --keyword: #E2E8F0;
+      --function: #38BDF8;
+      --class: #E2E8F0;
+      --type: #E879A6;
+      --string: #4ADE80;
+      --constant: #FBBF24;
+      --property: #A7B1C2;
+      --decorator: #F59E0B;
+      --operator: #94A3B8;
+      --comment: #748092;
+      --error: #FB7185;
+      --selection: #223B58;
+    }
+
+    @media (max-width: 1120px) {
+      main {
+        padding: 20px;
+      }
+
+      .intro,
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        grid-template-columns: 46px minmax(168px, 220px) minmax(0, 1fr);
+      }
+
+      .palette {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .preview {
+        grid-template-columns: 1fr;
+      }
+
+      .activity {
+        display: none;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .variant-head {
+        grid-template-columns: 1fr;
+      }
+
+      .palette {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div>
+        <h1 id="title">Shokunin Dark Mode Concepts</h1>
+        <p>Static previews for a second VS Code theme choice. The syntax keeps Shokunin's current contract: sumi-like keywords/classes, asagi functions, ume type hints, tea strings, kintsugi constants, quiet properties, diagnostic-only red.</p>
+      </div>
+      <aside class="rank-list" aria-label="Recommended ranking">
+        <h3>My top 3</h3>
+        <ol>
+          <li><strong>Yoru Sumi</strong> - closest dark translation of the current theme.</li>
+          <li><strong>Tsuki Ishi</strong> - most atmospheric, Kanagawa-adjacent without copying it.</li>
+          <li><strong>Kuro Kintsugi</strong> - warmest and most distinctive, but more opinionated.</li>
+        </ol>
+      </aside>
+    </section>
+
+    <article class="variant v-yoru">
+      <header class="variant-head">
+        <div>
+          <h2>1. Yoru Sumi</h2>
+          <p class="variant-note">Warm charcoal workshop. Direct dark sibling for the rice-paper light theme: calm, readable, not black, not neon.</p>
+        </div>
+        <div class="badge">Top 1</div>
+      </header>
+      <div class="preview">
+        <div class="activity">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div></div>
+          <div class="dot"></div>
+        </div>
+        <aside class="sidebar">
+          <div class="side-title">Shokunin</div>
+          <div class="side-section">Explorer</div>
+          <div class="file-tree">
+            <div class="file active">theme_profile.py</div>
+            <div class="file">tokens.ts</div>
+            <div class="file">palette.json</div>
+            <div class="file">Dockerfile</div>
+            <div class="file">README.md</div>
+          </div>
+        </aside>
+        <section class="editor-shell">
+          <div class="tabbar">
+            <div class="tab active">theme_profile.py</div>
+            <div class="tab">tokens.ts</div>
+            <div class="tab">palette.json</div>
+          </div>
+          <div class="editor-grid">
+            <div class="pane">
+              <div class="pane-title"><span>Python</span><span>main navigation: functions</span></div>
+              <pre aria-label="Python code preview"><span class="line"><span class="ln">1</span><span class="code"><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field</span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="kw">from</span> pathlib <span class="kw">import</span> <span class="type">Path</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code"><span class="kw">from</span> typing <span class="kw">import</span> <span class="type">Protocol</span></span></span>
+<span class="line"><span class="ln">4</span><span class="code"></span></span>
+<span class="line"><span class="ln">5</span><span class="code"><span class="kw">class</span> <span class="class">PaletteSource</span>(<span class="type">Protocol</span>):</span></span>
+<span class="line"><span class="ln">6</span><span class="code">    <span class="kw">async</span> <span class="kw">def</span> <span class="fn">fetch_palette</span>(<span class="prop">self</span>, <span class="prop">name</span>: <span class="type">str</span>) -&gt; <span class="type">dict</span>[<span class="type">str</span>, <span class="type">str</span>]: ...</span></span>
+<span class="line"><span class="ln">7</span><span class="code"></span></span>
+<span class="line"><span class="ln">8</span><span class="code"><span class="decorator">@dataclass</span>(frozen=<span class="const">True</span>)</span></span>
+<span class="line"><span class="ln">9</span><span class="code"><span class="kw">class</span> <span class="class">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">10</span><span class="code">    <span class="prop">name</span>: <span class="type">str</span></span></span>
+<span class="line"><span class="ln">11</span><span class="code">    <span class="prop">contrast</span>: <span class="type">float</span> = <span class="num">4.8</span></span></span>
+<span class="line"><span class="ln">12</span><span class="code">    <span class="prop">roles</span>: <span class="type">dict</span>[<span class="type">str</span>, <span class="type">str</span>] = <span class="fn">field</span>(default_factory=<span class="type">dict</span>)</span></span>
+<span class="line"><span class="ln">13</span><span class="code"></span></span>
+<span class="line hl"><span class="ln">14</span><span class="code"><span class="kw">async</span> <span class="kw">def</span> <span class="fn">render_profile</span>(<span class="prop">source</span>: <span class="type">PaletteSource</span>, <span class="prop">path</span>: <span class="type">Path</span>) -&gt; <span class="type">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">15</span><span class="code">    <span class="comment"># Red stays reserved for diagnostics.</span></span></span>
+<span class="line"><span class="ln">16</span><span class="code">    <span class="prop">raw</span> = <span class="kw">await</span> <span class="prop">source</span>.<span class="fn">fetch_palette</span>(<span class="prop">path</span>.<span class="prop">stem</span>)</span></span>
+<span class="line"><span class="ln">17</span><span class="code">    <span class="kw">return</span> <span class="class">ThemeProfile</span>(<span class="prop">name</span>=<span class="prop">raw</span>[<span class="str">"name"</span>], <span class="prop">roles</span>=<span class="prop">raw</span>)</span></span></pre>
+            </div>
+            <div class="pane">
+              <div class="pane-title"><span>TypeScript + JSON</span><span>secondary files</span></div>
+              <pre aria-label="TypeScript and JSON code preview"><span class="line"><span class="ln">1</span><span class="code"><span class="kw">type</span> <span class="type">TokenRole</span> = <span class="str">"keyword"</span> | <span class="str">"function"</span> | <span class="str">"type"</span>;</span></span>
+<span class="line"><span class="ln">2</span><span class="code"></span></span>
+<span class="line"><span class="ln">3</span><span class="code"><span class="kw">interface</span> <span class="class">ThemeVariant</span> {</span></span>
+<span class="line"><span class="ln">4</span><span class="code">  <span class="prop">id</span>: <span class="type">string</span>;</span></span>
+<span class="line"><span class="ln">5</span><span class="code">  <span class="prop">contrast</span>: <span class="type">number</span>;</span></span>
+<span class="line"><span class="ln">6</span><span class="code">  <span class="prop">roles</span>: <span class="type">Record</span>&lt;<span class="type">TokenRole</span>, <span class="type">string</span>&gt;;</span></span>
+<span class="line"><span class="ln">7</span><span class="code">}</span></span>
+<span class="line"><span class="ln">8</span><span class="code"></span></span>
+<span class="line hl"><span class="ln">9</span><span class="code"><span class="kw">export</span> <span class="kw">function</span> <span class="fn">resolveRole</span>(<span class="prop">variant</span>: <span class="type">ThemeVariant</span>, <span class="prop">role</span>: <span class="type">TokenRole</span>): <span class="type">string</span> {</span></span>
+<span class="line"><span class="ln">10</span><span class="code">  <span class="kw">const</span> <span class="prop">fallback</span> = <span class="prop">variant</span>.<span class="prop">roles</span>.<span class="prop">keyword</span> ?? <span class="str">"#ECE2D0"</span>;</span></span>
+<span class="line"><span class="ln">11</span><span class="code">  <span class="kw">return</span> <span class="sel"><span class="prop">variant</span>.<span class="prop">roles</span>[<span class="prop">role</span>] ?? <span class="prop">fallback</span></span>;</span></span>
+<span class="line"><span class="ln">12</span><span class="code">}</span></span>
+<span class="line"><span class="ln">13</span><span class="code"></span></span>
+<span class="line"><span class="ln">14</span><span class="code">{</span></span>
+<span class="line"><span class="ln">15</span><span class="code">  <span class="prop">"name"</span>: <span class="str">"Yoru Sumi"</span>,</span></span>
+<span class="line"><span class="ln">16</span><span class="code">  <span class="prop">"semanticHighlighting"</span>: <span class="const">true</span>,</span></span>
+<span class="line"><span class="ln">17</span><span class="code">  <span class="prop">"contrast"</span>: <span class="num">7.1</span></span></span>
+<span class="line"><span class="ln">18</span><span class="code">}</span></span></pre>
+            </div>
+          </div>
+          <footer class="status"><span><strong>asagi</strong> for callable movement</span><span>Ln 14, Col 11</span></footer>
+        </section>
+      </div>
+      <div class="palette" aria-label="Yoru Sumi palette">
+        <div class="swatch"><div class="swatch-color" style="--c: var(--editor);"></div><div class="swatch-label">editor</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--fg);"></div><div class="swatch-label">ink</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--function);"></div><div class="swatch-label">function</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--type);"></div><div class="swatch-label">type</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--string);"></div><div class="swatch-label">string</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--constant);"></div><div class="swatch-label">constant</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--comment);"></div><div class="swatch-label">comment</div></div>
+        <div class="swatch"><div class="swatch-color" style="--c: var(--error);"></div><div class="swatch-label">error</div></div>
+      </div>
+    </article>
+
+    <article class="variant v-tsuki">
+      <header class="variant-head">
+        <div>
+          <h2>2. Tsuki Ishi</h2>
+          <p class="variant-note">Moonlit blue stone. Cooler and more atmospheric than Yoru Sumi, with stronger night-editor identity.</p>
+        </div>
+        <div class="badge">Top 2</div>
+      </header>
+      <div class="preview">
+        <div class="activity">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div></div><div class="dot"></div>
+        </div>
+        <aside class="sidebar">
+          <div class="side-title">Shokunin</div>
+          <div class="side-section">Explorer</div>
+          <div class="file-tree"><div class="file active">theme_profile.py</div><div class="file">tokens.ts</div><div class="file">palette.json</div><div class="file">Dockerfile</div><div class="file">README.md</div></div>
+        </aside>
+        <section class="editor-shell">
+          <div class="tabbar"><div class="tab active">theme_profile.py</div><div class="tab">tokens.ts</div><div class="tab">palette.json</div></div>
+          <div class="editor-grid">
+            <div class="pane">
+              <div class="pane-title"><span>Python</span><span>cooler focus</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">from</span> pathlib <span class="kw">import</span> <span class="type">Path</span></span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="kw">from</span> typing <span class="kw">import</span> <span class="type">Protocol</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code"></span></span>
+<span class="line"><span class="ln">4</span><span class="code"><span class="kw">class</span> <span class="class">PaletteSource</span>(<span class="type">Protocol</span>):</span></span>
+<span class="line"><span class="ln">5</span><span class="code">    <span class="kw">async</span> <span class="kw">def</span> <span class="fn">fetch_palette</span>(<span class="prop">self</span>, <span class="prop">name</span>: <span class="type">str</span>) -&gt; <span class="type">dict</span>[<span class="type">str</span>, <span class="type">str</span>]: ...</span></span>
+<span class="line"><span class="ln">6</span><span class="code"></span></span>
+<span class="line"><span class="ln">7</span><span class="code"><span class="decorator">@dataclass</span>(frozen=<span class="const">True</span>)</span></span>
+<span class="line"><span class="ln">8</span><span class="code"><span class="kw">class</span> <span class="class">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">9</span><span class="code">    <span class="prop">name</span>: <span class="type">str</span></span></span>
+<span class="line"><span class="ln">10</span><span class="code">    <span class="prop">contrast</span>: <span class="type">float</span> = <span class="num">4.8</span></span></span>
+<span class="line hl"><span class="ln">11</span><span class="code"><span class="kw">async</span> <span class="kw">def</span> <span class="fn">render_profile</span>(<span class="prop">source</span>: <span class="type">PaletteSource</span>, <span class="prop">path</span>: <span class="type">Path</span>) -&gt; <span class="type">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">12</span><span class="code">    <span class="comment"># Atmosphere can be cool, token roles stay disciplined.</span></span></span>
+<span class="line"><span class="ln">13</span><span class="code">    <span class="prop">raw</span> = <span class="kw">await</span> <span class="prop">source</span>.<span class="fn">fetch_palette</span>(<span class="prop">path</span>.<span class="prop">stem</span>)</span></span>
+<span class="line"><span class="ln">14</span><span class="code">    <span class="kw">return</span> <span class="class">ThemeProfile</span>(<span class="prop">name</span>=<span class="prop">raw</span>[<span class="str">"name"</span>])</span></span></pre>
+            </div>
+            <div class="pane">
+              <div class="pane-title"><span>TypeScript</span><span>selection and constants</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">type</span> <span class="type">TokenRole</span> = <span class="str">"keyword"</span> | <span class="str">"function"</span> | <span class="str">"type"</span>;</span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="kw">interface</span> <span class="class">ThemeVariant</span> {</span></span>
+<span class="line"><span class="ln">3</span><span class="code">  <span class="prop">id</span>: <span class="type">string</span>;</span></span>
+<span class="line"><span class="ln">4</span><span class="code">  <span class="prop">contrast</span>: <span class="type">number</span>;</span></span>
+<span class="line"><span class="ln">5</span><span class="code">}</span></span>
+<span class="line"><span class="ln">6</span><span class="code"><span class="kw">export</span> <span class="kw">const</span> <span class="const">DEFAULT_CONTRAST</span> = <span class="num">7.4</span>;</span></span>
+<span class="line hl"><span class="ln">7</span><span class="code"><span class="kw">export</span> <span class="kw">function</span> <span class="fn">resolveRole</span>(<span class="prop">variant</span>: <span class="type">ThemeVariant</span>): <span class="type">string</span> {</span></span>
+<span class="line"><span class="ln">8</span><span class="code">  <span class="kw">return</span> <span class="sel"><span class="prop">variant</span>.<span class="prop">id</span> ?? <span class="str">"tsuki-ishi"</span></span>;</span></span>
+<span class="line"><span class="ln">9</span><span class="code">}</span></span></pre>
+            </div>
+          </div>
+          <footer class="status"><span><strong>cooler asagi</strong> with restrained contrast</span><span>UTF-8</span></footer>
+        </section>
+      </div>
+      <div class="palette">
+        <div class="swatch"><div class="swatch-color" style="--c: var(--editor);"></div><div class="swatch-label">editor</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--fg);"></div><div class="swatch-label">ink</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--function);"></div><div class="swatch-label">function</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--type);"></div><div class="swatch-label">type</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--string);"></div><div class="swatch-label">string</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--constant);"></div><div class="swatch-label">constant</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--comment);"></div><div class="swatch-label">comment</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--error);"></div><div class="swatch-label">error</div></div>
+      </div>
+    </article>
+
+    <article class="variant v-kuro">
+      <header class="variant-head">
+        <div>
+          <h2>3. Kuro Kintsugi</h2>
+          <p class="variant-note">Dark lacquer and aged gold. Strongest craft object feeling, good for a distinctive theme, less neutral than Yoru Sumi.</p>
+        </div>
+        <div class="badge">Top 3</div>
+      </header>
+      <div class="preview">
+        <div class="activity">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div></div><div class="dot"></div>
+        </div>
+        <aside class="sidebar">
+          <div class="side-title">Shokunin</div>
+          <div class="side-section">Explorer</div>
+          <div class="file-tree"><div class="file active">theme_profile.py</div><div class="file">tokens.ts</div><div class="file">palette.json</div><div class="file">Dockerfile</div><div class="file">README.md</div></div>
+        </aside>
+        <section class="editor-shell">
+          <div class="tabbar"><div class="tab active">theme_profile.py</div><div class="tab">tokens.ts</div><div class="tab">palette.json</div></div>
+          <div class="editor-grid">
+            <div class="pane">
+              <div class="pane-title"><span>Python</span><span>warmest option</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">from</span> pathlib <span class="kw">import</span> <span class="type">Path</span></span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="kw">class</span> <span class="class">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">3</span><span class="code">    <span class="prop">name</span>: <span class="type">str</span></span></span>
+<span class="line"><span class="ln">4</span><span class="code">    <span class="prop">contrast</span>: <span class="type">float</span> = <span class="num">4.8</span></span></span>
+<span class="line"><span class="ln">5</span><span class="code"></span></span>
+<span class="line hl"><span class="ln">6</span><span class="code"><span class="kw">async</span> <span class="kw">def</span> <span class="fn">render_profile</span>(<span class="prop">path</span>: <span class="type">Path</span>) -&gt; <span class="type">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">7</span><span class="code">    <span class="comment"># Kintsugi reads beautifully, but should not dominate.</span></span></span>
+<span class="line"><span class="ln">8</span><span class="code">    <span class="kw">return</span> <span class="class">ThemeProfile</span>(<span class="prop">name</span>=<span class="str">"Kuro Kintsugi"</span>)</span></span></pre>
+            </div>
+            <div class="pane">
+              <div class="pane-title"><span>JSON</span><span>config readability</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code">{</span></span>
+<span class="line"><span class="ln">2</span><span class="code">  <span class="prop">"name"</span>: <span class="str">"Kuro Kintsugi"</span>,</span></span>
+<span class="line"><span class="ln">3</span><span class="code">  <span class="prop">"uiTheme"</span>: <span class="str">"vs-dark"</span>,</span></span>
+<span class="line"><span class="ln">4</span><span class="code">  <span class="prop">"semanticHighlighting"</span>: <span class="const">true</span>,</span></span>
+<span class="line"><span class="ln">5</span><span class="code">  <span class="prop">"contrast"</span>: <span class="num">7.0</span></span></span>
+<span class="line"><span class="ln">6</span><span class="code">}</span></span></pre>
+            </div>
+          </div>
+          <footer class="status"><span><strong>kintsugi</strong> visible, not everywhere</span><span>Spaces: 4</span></footer>
+        </section>
+      </div>
+      <div class="palette">
+        <div class="swatch"><div class="swatch-color" style="--c: var(--editor);"></div><div class="swatch-label">editor</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--fg);"></div><div class="swatch-label">ink</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--function);"></div><div class="swatch-label">function</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--type);"></div><div class="swatch-label">type</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--string);"></div><div class="swatch-label">string</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--constant);"></div><div class="swatch-label">constant</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--comment);"></div><div class="swatch-label">comment</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--error);"></div><div class="swatch-label">error</div></div>
+      </div>
+    </article>
+
+    <article class="variant v-ensou">
+      <header class="variant-head">
+        <div>
+          <h2>4. Ensou Ink</h2>
+          <p class="variant-note">Low-contrast ink wash. Good for long sessions, but it may feel too muted beside the current light theme.</p>
+        </div>
+        <div class="badge">Alt 4</div>
+      </header>
+      <div class="preview">
+        <div class="activity">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div></div><div class="dot"></div>
+        </div>
+        <aside class="sidebar">
+          <div class="side-title">Shokunin</div>
+          <div class="side-section">Explorer</div>
+          <div class="file-tree"><div class="file active">theme_profile.py</div><div class="file">tokens.ts</div><div class="file">palette.json</div><div class="file">Dockerfile</div><div class="file">README.md</div></div>
+        </aside>
+        <section class="editor-shell">
+          <div class="tabbar"><div class="tab active">theme_profile.py</div><div class="tab">tokens.ts</div><div class="tab">palette.json</div></div>
+          <div class="editor-grid">
+            <div class="pane">
+              <div class="pane-title"><span>Python</span><span>quietest contrast</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">class</span> <span class="class">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">2</span><span class="code">    <span class="prop">name</span>: <span class="type">str</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code">    <span class="prop">contrast</span>: <span class="type">float</span> = <span class="num">4.8</span></span></span>
+<span class="line"><span class="ln">4</span><span class="code"></span></span>
+<span class="line hl"><span class="ln">5</span><span class="code"><span class="kw">def</span> <span class="fn">resolve_role</span>(<span class="prop">role</span>: <span class="type">str</span>) -&gt; <span class="type">str</span>:</span></span>
+<span class="line"><span class="ln">6</span><span class="code">    <span class="comment"># Calm, but possibly too soft.</span></span></span>
+<span class="line"><span class="ln">7</span><span class="code">    <span class="kw">return</span> <span class="str">"ensou-ink"</span></span></span></pre>
+            </div>
+            <div class="pane">
+              <div class="pane-title"><span>YAML</span><span>secondary files</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="prop">theme</span>: <span class="str">ensou-ink</span></span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="prop">semanticHighlighting</span>: <span class="const">true</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code"><span class="prop">contrast</span>: <span class="num">6.3</span></span></span></pre>
+            </div>
+          </div>
+          <footer class="status"><span><strong>softest</strong> workshop variant</span><span>Ln 5</span></footer>
+        </section>
+      </div>
+      <div class="palette">
+        <div class="swatch"><div class="swatch-color" style="--c: var(--editor);"></div><div class="swatch-label">editor</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--fg);"></div><div class="swatch-label">ink</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--function);"></div><div class="swatch-label">function</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--type);"></div><div class="swatch-label">type</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--string);"></div><div class="swatch-label">string</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--constant);"></div><div class="swatch-label">constant</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--comment);"></div><div class="swatch-label">comment</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--error);"></div><div class="swatch-label">error</div></div>
+      </div>
+    </article>
+
+    <article class="variant v-asagi">
+      <header class="variant-head">
+        <div>
+          <h2>5. Asagi Night</h2>
+          <p class="variant-note">Sharper blue-black editor. High readability and energy, but it moves furthest away from the rice-paper craft identity.</p>
+        </div>
+        <div class="badge">Alt 5</div>
+      </header>
+      <div class="preview">
+        <div class="activity">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div></div><div class="dot"></div>
+        </div>
+        <aside class="sidebar">
+          <div class="side-title">Shokunin</div>
+          <div class="side-section">Explorer</div>
+          <div class="file-tree"><div class="file active">theme_profile.py</div><div class="file">tokens.ts</div><div class="file">palette.json</div><div class="file">Dockerfile</div><div class="file">README.md</div></div>
+        </aside>
+        <section class="editor-shell">
+          <div class="tabbar"><div class="tab active">theme_profile.py</div><div class="tab">tokens.ts</div><div class="tab">palette.json</div></div>
+          <div class="editor-grid">
+            <div class="pane">
+              <div class="pane-title"><span>Python</span><span>most modern contrast</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">class</span> <span class="class">ThemeProfile</span>:</span></span>
+<span class="line"><span class="ln">2</span><span class="code">    <span class="prop">name</span>: <span class="type">str</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code">    <span class="prop">contrast</span>: <span class="type">float</span> = <span class="num">4.8</span></span></span>
+<span class="line"><span class="ln">4</span><span class="code"></span></span>
+<span class="line hl"><span class="ln">5</span><span class="code"><span class="kw">def</span> <span class="fn">resolve_role</span>(<span class="prop">role</span>: <span class="type">str</span>) -&gt; <span class="type">str</span>:</span></span>
+<span class="line"><span class="ln">6</span><span class="code">    <span class="comment"># Fast and clear, less handmade.</span></span></span>
+<span class="line"><span class="ln">7</span><span class="code">    <span class="kw">return</span> <span class="str">"asagi-night"</span></span></span></pre>
+            </div>
+            <div class="pane">
+              <div class="pane-title"><span>Dockerfile</span><span>operators and constants</span></div>
+              <pre><span class="line"><span class="ln">1</span><span class="code"><span class="kw">FROM</span> <span class="str">node:22-alpine</span></span></span>
+<span class="line"><span class="ln">2</span><span class="code"><span class="kw">WORKDIR</span> <span class="str">/theme</span></span></span>
+<span class="line"><span class="ln">3</span><span class="code"><span class="kw">COPY</span> <span class="str">package.json</span> <span class="str">./</span></span></span>
+<span class="line"><span class="ln">4</span><span class="code"><span class="kw">RUN</span> npm ci</span></span></pre>
+            </div>
+          </div>
+          <footer class="status"><span><strong>brightest</strong> function signal</span><span>CRLF</span></footer>
+        </section>
+      </div>
+      <div class="palette">
+        <div class="swatch"><div class="swatch-color" style="--c: var(--editor);"></div><div class="swatch-label">editor</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--fg);"></div><div class="swatch-label">ink</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--function);"></div><div class="swatch-label">function</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--type);"></div><div class="swatch-label">type</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--string);"></div><div class="swatch-label">string</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--constant);"></div><div class="swatch-label">constant</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--comment);"></div><div class="swatch-label">comment</div></div><div class="swatch"><div class="swatch-color" style="--c: var(--error);"></div><div class="swatch-label">error</div></div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
