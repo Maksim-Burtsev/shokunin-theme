@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   buildItermColorsPlist,
   generateItermColorsFile,
+  generateItermColorsFiles,
 } from "./generate-itermcolors.mjs";
 
 const theme = {
@@ -146,6 +147,49 @@ test("writes shokunin.itermcolors to the requested output directory", () => {
 
     assert.equal(basename(outputPath), "shokunin.itermcolors");
     assert.match(readFileSync(outputPath, "utf8"), /<key>Selection Color<\/key>/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("writes light and dark iTerm2 presets", () => {
+  const dir = mkdtempSync(join(tmpdir(), "shokunin-iterm-test-"));
+
+  try {
+    const lightThemePath = join(dir, "light-theme.json");
+    const darkThemePath = join(dir, "dark-theme.json");
+    const outputDir = join(dir, "iterm");
+    const darkTheme = structuredClone(theme);
+
+    darkTheme.colors["terminal.background"] = "#151819";
+    darkTheme.colors["terminal.foreground"] = "#CFC2B0";
+    darkTheme.colors["terminalCursor.background"] = "#151819";
+
+    writeFileSync(lightThemePath, `${JSON.stringify(theme, null, 2)}\n`);
+    writeFileSync(darkThemePath, `${JSON.stringify(darkTheme, null, 2)}\n`);
+
+    const outputPaths = generateItermColorsFiles({
+      outputDir,
+      presets: [
+        {
+          themePath: lightThemePath,
+          presetName: "shokunin",
+        },
+        {
+          themePath: darkThemePath,
+          presetName: "shokunin-dark",
+        },
+      ],
+    });
+
+    assert.deepEqual(outputPaths.map((outputPath) => basename(outputPath)), [
+      "shokunin.itermcolors",
+      "shokunin-dark.itermcolors",
+    ]);
+    assert.match(
+      readFileSync(join(outputDir, "shokunin-dark.itermcolors"), "utf8"),
+      /<key>Background Color<\/key>/,
+    );
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

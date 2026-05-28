@@ -2,10 +2,24 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-const DEFAULT_THEME_PATH = fileURLToPath(
+const LIGHT_THEME_PATH = fileURLToPath(
   new URL("../themes/shokunin-sumi-ume-color-theme.json", import.meta.url),
 );
+const DARK_THEME_PATH = fileURLToPath(
+  new URL("../themes/shokunin-yoru-sumi-color-theme.json", import.meta.url),
+);
 const DEFAULT_OUTPUT_DIR = fileURLToPath(new URL("../iterm", import.meta.url));
+
+const DEFAULT_PRESETS = [
+  {
+    themePath: LIGHT_THEME_PATH,
+    presetName: "shokunin",
+  },
+  {
+    themePath: DARK_THEME_PATH,
+    presetName: "shokunin-dark",
+  },
+];
 
 const COLOR_MAPPINGS = [
   ["Ansi 0 Color", "terminal.ansiBlack"],
@@ -88,7 +102,7 @@ export function buildItermColorsPlist(theme) {
 }
 
 export function generateItermColorsFile({
-  themePath = DEFAULT_THEME_PATH,
+  themePath = LIGHT_THEME_PATH,
   outputDir = DEFAULT_OUTPUT_DIR,
   presetName = "shokunin",
 } = {}) {
@@ -102,7 +116,20 @@ export function generateItermColorsFile({
   return outputPath;
 }
 
+export function generateItermColorsFiles({
+  outputDir = DEFAULT_OUTPUT_DIR,
+  presets = DEFAULT_PRESETS,
+} = {}) {
+  return presets.map((preset) => {
+    return generateItermColorsFile({
+      outputDir,
+      ...preset,
+    });
+  });
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const outputPath = generateItermColorsFile();
-  console.log(outputPath);
+  for (const outputPath of generateItermColorsFiles()) {
+    console.log(outputPath);
+  }
 }
