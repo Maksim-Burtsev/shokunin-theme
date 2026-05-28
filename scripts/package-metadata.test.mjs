@@ -42,6 +42,9 @@ test("dark theme uses the Yoru Sumi / Warm Ink token contract", () => {
   assert.equal(darkTheme.colors["editor.background"], "#151819");
   assert.equal(darkTheme.colors["sideBar.background"], "#1B1F1F");
   assert.equal(darkTheme.colors["editor.selectionBackground"], "#33424A");
+  assert.equal(darkTheme.colors["editor.findMatchBackground"], "#CFC2B02E");
+  assert.equal(darkTheme.colors["editor.findMatchBorder"], "#CFC2B08A");
+  assert.equal(darkTheme.colors["editor.findMatchHighlightBackground"], "#CFC2B018");
   assert.equal(darkTheme.semanticTokenColors.keyword.foreground, "#D7C4AA");
   assert.equal(darkTheme.semanticTokenColors.function.foreground, "#6FB7D7");
   assert.equal(darkTheme.semanticTokenColors.method.foreground, "#6FB7D7");
