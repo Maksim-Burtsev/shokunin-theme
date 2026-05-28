@@ -4,7 +4,7 @@
 
 The light theme is based on calibration variant **23 Sumi / Ume Type**.
 
-The dark theme is based on the **Yoru Sumi** concept.
+The dark theme is based on the **Yoru Sumi / Warm Ink** concept.
 
 The only acceptable final class/type pairing is:
 

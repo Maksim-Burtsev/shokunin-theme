@@ -70,15 +70,16 @@ integrated terminal colors.
 
 | Role | Color |
 |---|---:|
-| Charcoal / editor background | `#15191A` |
-| Night panel | `#191E1E` |
-| Main ink | `#DCD6CC` |
-| Keywords / class names | `#ECE2D0` |
+| Charcoal / editor background | `#151819` |
+| Night panel | `#1B1F1F` |
+| Main ink | `#CFC2B0` |
+| Keywords | `#D7C4AA` |
+| Class names | `#E0CEB4` |
 | Functions / methods | `#6FB7D7` |
-| Type hints | `#D88AA3` |
+| Type hints | `#D28AA0` |
 | Strings | `#83BE8D` |
-| Constants / numbers | `#D6A84C` |
-| Comments | `#8F948D` |
+| Constants / numbers | `#D3A34D` |
+| Comments | `#88877E` |
 
 ## License
 
