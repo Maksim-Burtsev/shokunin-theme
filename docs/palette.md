@@ -1,6 +1,6 @@
 # Palette
 
-Final selected variant: **Sumi / Ume Type**.
+Final selected light variant: **Sumi / Ume Type**.
 
 | Role | Color | Notes |
 |---|---:|---|
@@ -17,3 +17,22 @@ Final selected variant: **Sumi / Ume Type**.
 | Dry wood decorator | `#8A4A1C` | Decorators |
 | Comment | `#777269` | Comments |
 | Diagnostic red | `#C84053` | Errors only |
+
+## Dark variant: Yoru Sumi / Warm Ink
+
+| Role | Color | Notes |
+|---|---:|---|
+| Charcoal | `#151819` | Editor and terminal background |
+| Night panel | `#1B1F1F` | Sidebar, tabs, widgets |
+| Raised panel | `#202524` | Activity bar, headers, status surfaces |
+| Ink | `#CFC2B0` | Main text |
+| Sumi keyword | `#D7C4AA` | Keywords and control flow |
+| Warm ink class | `#E0CEB4` | Classes and markup headings |
+| Asagi function | `#6FB7D7` | Functions and methods |
+| Ume type | `#D28AA0` | Type hints |
+| Tea string | `#83BE8D` | Strings |
+| Kintsugi amber | `#D3A34D` | Constants, enum members, numbers |
+| Quiet property | `#AFB8B8` | Properties and attributes |
+| Dry wood decorator | `#D09161` | Decorators |
+| Comment | `#88877E` | Comments |
+| Diagnostic red | `#E06C75` | Errors only |

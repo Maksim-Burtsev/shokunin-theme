@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Add Shokunin Dark as a second VS Code theme option.
+- Rename the existing picker entry to Shokunin Light.
+- Rename the Marketplace display name to Shokunin.
+
 ## 0.1.2
 
 - Update merge conflict colors.

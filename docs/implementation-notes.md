@@ -2,7 +2,9 @@
 
 ## Exact visual target
 
-The theme is based on calibration variant **23 Sumi / Ume Type**.
+The light theme is based on calibration variant **23 Sumi / Ume Type**.
+
+The dark theme is based on the **Yoru Sumi / Warm Ink** concept.
 
 The only acceptable final class/type pairing is:
 
@@ -29,3 +31,9 @@ The theme includes defensive semantic selectors for type hints:
 ```
 
 These are included because Python semantic highlighting can distinguish type-hint contexts more precisely than TextMate scopes alone.
+
+## Marketplace / picker naming
+
+- Extension id stays `maksim-burtsev.shokunin-light` for update continuity.
+- Marketplace display name is `Shokunin`.
+- Theme picker labels are `Shokunin Light` and `Shokunin Dark`.

@@ -15,3 +15,4 @@ icon.png
 package-lock.json
 package.json
 themes/shokunin-sumi-ume-color-theme.json
+themes/shokunin-yoru-sumi-color-theme.json

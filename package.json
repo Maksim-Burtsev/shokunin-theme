@@ -1,8 +1,8 @@
 {
   "name": "shokunin-light",
-  "displayName": "Shokunin Light",
-  "description": "A rice-paper light theme for Python-focused craft: sumi classes, ume type hints, asagi functions.",
-  "version": "0.1.2",
+  "displayName": "Shokunin",
+  "description": "Light and dark VS Code themes for Python-focused craft: sumi classes, ume type hints, asagi functions.",
+  "version": "0.2.0",
   "publisher": "maksim-burtsev",
   "license": "MIT",
   "icon": "icon.png",
@@ -17,6 +17,7 @@
     "theme",
     "vscode-theme",
     "light-theme",
+    "dark-theme",
     "python",
     "rice-paper",
     "shokunin",
@@ -42,9 +43,14 @@
   "contributes": {
     "themes": [
       {
-        "label": "Shokunin",
+        "label": "Shokunin Light",
         "uiTheme": "vs",
         "path": "./themes/shokunin-sumi-ume-color-theme.json"
+      },
+      {
+        "label": "Shokunin Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/shokunin-yoru-sumi-color-theme.json"
       }
     ]
   }
